@@ -16,6 +16,7 @@ var setupClose = setup.querySelector('.setup-close');
 var setupWizardForm = setup.querySelector('.setup-wizard-form');
 var setupNameInput = setupWizardForm.querySelector('.setup-user-name');
 var wizardEyes = setupWizardForm.querySelector('.wizard-eyes');
+var wizardCoat = setupWizardForm.querySelector('.wizard-coat');
 var fireballWrap = setupWizardForm.querySelector('.setup-fireball-wrap');
 var similarWizardTemplate = document.querySelector('#similar-wizard-template').content.querySelector('.setup-similar-item');
 var similarListElement = setup.querySelector('.setup-similar-list');
@@ -63,6 +64,13 @@ var onFireballClick = function () {
   fireballWrap.querySelector('input').value = fireballColor;
 };
 
+// Изменение цвета плаща при клике
+var onWizardCoatClick = function () {
+  var coatColor = getRandomItemFromArray(COAT_COLORS);
+  wizardCoat.style.fill = coatColor;
+  setupWizardForm.querySelector('input[name=coat-color]').value = coatColor;
+};
+
 var openPopup = function () {
   setup.classList.remove('hidden');
   document.addEventListener('keydown', onPopupEscPress);
@@ -70,6 +78,7 @@ var openPopup = function () {
   setupClose.addEventListener('keydown', onSetupCloseEnterPress);
   wizardEyes.addEventListener('click', onWizardEyesClick);
   fireballWrap.addEventListener('click', onFireballClick);
+  wizardCoat.addEventListener('click', onWizardCoatClick);
 };
 
 var closePopup = function () {
@@ -79,6 +88,7 @@ var closePopup = function () {
   setupClose.removeEventListener('keydown', onSetupCloseEnterPress);
   wizardEyes.removeEventListener('click', onWizardEyesClick);
   fireballWrap.removeEventListener('click', onFireballClick);
+  wizardCoat.removeEventListener('click', onWizardCoatClick);
 };
 
 setupOpen.addEventListener('click', function () {
