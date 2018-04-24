@@ -29,6 +29,50 @@
       var coatColor = window.util.getRandomItemFromArray(COAT_COLORS);
       wizardCoat.style.fill = coatColor;
       setupWizardForm.querySelector('input[name=coat-color]').value = coatColor;
+    },
+    // Перемещение артефакта
+    onShopElementDragstart: function (dragstartEvt) {
+      var artifactsElement = document.querySelector('.setup-artifacts');
+      var draggedItem = null;
+
+      if (dragstartEvt.target.tagName.toLowerCase() === 'img') {
+        draggedItem = dragstartEvt.target;
+        dragstartEvt.dataTransfer.setData('text/plain', dragstartEvt.target.alt);
+        artifactsElement.style.outline = '2px dashed red';
+      }
+
+      artifactsElement.addEventListener('dragstart', function () {
+        artifactsElement.style.outline = '2px dashed red';
+      });
+
+      artifactsElement.addEventListener('dragover', function (evt) {
+        evt.preventDefault();
+        return false;
+      });
+
+      artifactsElement.addEventListener('drop', function (evt) {
+        evt.preventDefault();
+        evt.target.style.backgroundColor = '';
+        evt.target.appendChild(draggedItem);
+        artifactsElement.style.outline = '';
+      });
+
+      artifactsElement.addEventListener('dragenter', function (evt) {
+        evt.preventDefault();
+        evt.target.style.backgroundColor = 'yellow';
+      });
+
+      artifactsElement.addEventListener('dragleave', function (evt) {
+        evt.preventDefault();
+        evt.target.style.backgroundColor = '';
+      });
+
+      document.addEventListener('dragend', function (evt) {
+        evt.preventDefault();
+        artifactsElement.style.outline = '';
+      });
     }
   };
 })();
+
+
