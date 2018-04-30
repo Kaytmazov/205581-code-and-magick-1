@@ -19,6 +19,18 @@
 
       return sheffledArray;
     },
+    getItemsFromArray: function (array, itemsCount) {
+      var newArray = [];
+      var clone = array.slice();
+
+      for (var i = 0; i < itemsCount; i++) {
+        var index = Math.floor(Math.random() * clone.length);
+        var element = clone.splice(index, 1)[0];
+        newArray.push(element);
+      }
+
+      return newArray;
+    },
     onRequestError: function (errorMessage) {
       var node = document.createElement('div');
       node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';

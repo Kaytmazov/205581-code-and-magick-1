@@ -22,15 +22,15 @@
   // Функция отрисовки элементов
   var renderWizards = function (wizards) {
     var fragment = document.createDocumentFragment();
-    for (var i = 0; i < WIZARDS_COUNT; i++) {
+    for (var i = 0; i < wizards.length; i++) {
       fragment.appendChild(makeWizardElement(wizards[i]));
     }
     return fragment;
   };
 
   var onLoad = function (wizards) {
-    var shaffledWizardsArray = window.util.shuffleArray(wizards);
-    similarListElement.append(renderWizards(shaffledWizardsArray));
+    var wizardsArray = window.util.getItemsFromArray(wizards, WIZARDS_COUNT);
+    similarListElement.append(renderWizards(wizardsArray));
     document.querySelector('.setup-similar').classList.remove('hidden');
   };
 
