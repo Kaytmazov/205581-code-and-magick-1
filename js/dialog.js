@@ -3,6 +3,7 @@
 (function () {
   var ENTER_KEYCODE = 13;
   var ESC_KEYCODE = 27;
+  var SAVE_URL = 'https://js.dump.academy/code-and-magick';
 
   var setup = document.querySelector('.setup');
   var setupOpen = document.querySelector('.setup-open');
@@ -118,5 +119,14 @@
     if (evt.keyCode === ENTER_KEYCODE) {
       openPopup();
     }
+  });
+
+  var onSuccess = function () {
+    closePopup();
+  };
+
+  setupWizardForm.addEventListener('submit', function (evt) {
+    window.backend.save(new FormData(setupWizardForm), onSuccess, window.util.onRequestError, SAVE_URL);
+    evt.preventDefault();
   });
 })();
