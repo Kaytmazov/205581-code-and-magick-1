@@ -31,11 +31,11 @@ var renderText = function (ctx, x, y, text, baseline) {
 // Функция который находит лучший результат
 var getMaxElement = function (times) {
   var maxElement = times[0];
-  for (var i = 0; i < times.length; i++) {
-    if (times[i] > maxElement) {
-      maxElement = times[i];
+  times.forEach(function (it) {
+    if (it > maxElement) {
+      maxElement = it;
     }
-  }
+  });
   return maxElement;
 };
 
@@ -62,15 +62,15 @@ window.renderStatistics = function (ctx, names, times) {
   var maxTime = getMaxElement(times);
 
   // Рисуем гистограмму
-  for (var i = 0; i < names.length; i++) {
+  names.forEach(function (name, i) {
     var currentBarHeight = (BAR_HEIGHT * times[i]) / maxTime;
     var coordX = CHART_X + (BAR_WIDTH + BAR_GAP) * i;
     var coordY = CHART_Y + (BAR_HEIGHT - currentBarHeight);
 
     renderText(ctx, coordX, coordY, Math.floor(times[i]), 'bottom');
-    renderText(ctx, coordX, CHART_Y + BAR_HEIGHT + GAP, names[i], 'hanging');
+    renderText(ctx, coordX, CHART_Y + BAR_HEIGHT + GAP, name, 'hanging');
 
-    ctx.fillStyle = getBarColor(names[i]);
+    ctx.fillStyle = getBarColor(name);
     ctx.fillRect(coordX, coordY, BAR_WIDTH, currentBarHeight);
-  }
+  });
 };

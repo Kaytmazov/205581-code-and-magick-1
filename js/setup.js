@@ -7,28 +7,31 @@
 
   var setup = document.querySelector('.setup');
   var setupWizardForm = setup.querySelector('.setup-wizard-form');
-  var wizardEyes = setupWizardForm.querySelector('.wizard-eyes');
-  var wizardCoat = setupWizardForm.querySelector('.wizard-coat');
-  var fireballWrap = setupWizardForm.querySelector('.setup-fireball-wrap');
 
   window.setup = {
+    coatColor: '',
+    eyesColor: '',
     // Изменение цвета глаз при клике
     onWizardEyesClick: function () {
-      var eyesColor = window.util.getRandomItemFromArray(EYES_COLORS);
-      wizardEyes.style.fill = eyesColor;
-      setupWizardForm.querySelector('input[name=eyes-color]').value = eyesColor;
+      var newColor = window.util.getRandomItemFromArray(EYES_COLORS);
+      this.style.fill = newColor;
+      setupWizardForm.querySelector('input[name=eyes-color]').value = newColor;
+      window.setup.eyesColor = newColor;
+      window.debounce(window.similarWizards.updateWizards);
     },
     // Изменение цвета fireball при клике
     onFireballClick: function () {
       var fireballColor = window.util.getRandomItemFromArray(FIREBALL_COLORS);
-      fireballWrap.style.backgroundColor = fireballColor;
-      fireballWrap.querySelector('input').value = fireballColor;
+      this.style.backgroundColor = fireballColor;
+      setupWizardForm.querySelector('input[name=fireball-color]').value = fireballColor;
     },
     // Изменение цвета плаща при клике
     onWizardCoatClick: function () {
-      var coatColor = window.util.getRandomItemFromArray(COAT_COLORS);
-      wizardCoat.style.fill = coatColor;
-      setupWizardForm.querySelector('input[name=coat-color]').value = coatColor;
+      var newColor = window.util.getRandomItemFromArray(COAT_COLORS);
+      this.style.fill = newColor;
+      setupWizardForm.querySelector('input[name=coat-color]').value = newColor;
+      window.setup.coatColor = newColor;
+      window.debounce(window.similarWizards.updateWizards);
     },
     // Перемещение артефакта
     onShopElementDragstart: function (dragstartEvt) {

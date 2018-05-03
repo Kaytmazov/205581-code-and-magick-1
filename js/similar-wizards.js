@@ -6,33 +6,50 @@
 
   var setup = document.querySelector('.setup');
   var similarListElement = setup.querySelector('.setup-similar-list');
-  var similarWizardTemplate = document.querySelector('#similar-wizard-template').content.querySelector('.setup-similar-item');
+  var wizards = [];
 
-  // Создаем элемент
-  var makeWizardElement = function (wizard) {
-    var wizardElement = similarWizardTemplate.cloneNode(true);
+  var getRank = function (wizard) {
+    var rank = 0;
 
-    wizardElement.querySelector('.setup-similar-label').textContent = wizard.name;
-    wizardElement.querySelector('.wizard-coat').style.fill = wizard.colorCoat;
-    wizardElement.querySelector('.wizard-eyes').style.fill = wizard.colorEyes;
-
-    return wizardElement;
-  };
-
-  // Функция отрисовки элементов
-  var renderWizards = function (wizards) {
-    var fragment = document.createDocumentFragment();
-    for (var i = 0; i < wizards.length; i++) {
-      fragment.appendChild(makeWizardElement(wizards[i]));
+    if (wizard.colorCoat === window.setup.coatColor) {
+      rank += 2;
     }
-    return fragment;
+    if (wizard.colorEyes === window.setup.eyesColor) {
+      rank += 1;
+    }
+
+    return rank;
   };
 
-  var onLoad = function (wizards) {
-    var wizardsArray = window.util.getItemsFromArray(wizards, WIZARDS_COUNT);
-    similarListElement.append(renderWizards(wizardsArray));
+  var namesComparator = function (left, right) {
+    if (left > right) {
+      return 1;
+    } else if (left < right) {
+      return -1;
+    } else {
+      return 0;
+    }
+  };
+
+  var onLoad = function (data) {
+    wizards = data;
+    window.similarWizards.updateWizards();
     document.querySelector('.setup-similar').classList.remove('hidden');
   };
 
   window.backend.load(onLoad, window.util.onRequestError, LOAD_URL);
+
+  window.similarWizards = {
+    updateWizards: function () {
+      similarListElement.innerHTML = '';
+      var renderedWizards = window.renderWizards(wizards.sort(function (left, right) {
+        var rankDiff = getRank(right) - getRank(left);
+        if (rankDiff === 0) {
+          rankDiff = namesComparator(left.name, right.name);
+        }
+        return rankDiff;
+      }), WIZARDS_COUNT);
+      similarListElement.append(renderedWizards);
+    }
+  };
 })();
